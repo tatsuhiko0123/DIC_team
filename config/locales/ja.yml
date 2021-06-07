@@ -205,6 +205,7 @@ ja:
     pm: 午後
   views:
     messages:
+      delete_sitaYo: '議題を削除しました'
       change_owner: 'リーダーが変わりました'
       create_agenda: 'アジェンダ作成に成功しました！'
       create_article: '記事作成に成功しました！'
