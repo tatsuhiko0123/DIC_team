@@ -45,6 +45,7 @@
                   <% end %>
                 </li>
               <% end %>
+              <%= link_to '削除', agenda_path(agenda.id),method: :delete, data:  {confirm: 'are you sure?'} %>
               <li class="nav-item">
                 <%= link_to new_agenda_article_path(agenda), class: 'nav-link' do %>
                   <p>+ <%= I18n.t('views.messages.create_article') %></p>
