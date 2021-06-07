@@ -11,6 +11,19 @@ class AgendasController < ApplicationController
     @agenda = Agenda.new
   end
 
+  def destroy 
+    path = Rails.application.routes.recognize_path(request.referer)
+    @team = @agenda.team
+    @users = @team.members
+    if current_user.id == @agenda.user_id || current_user.id == @team.owner_id
+      @agenda.destroy
+      AssignMailer.delete_agenda_mail(@users).deliver
+      redirect_to dashboard_path
+    else
+      redirect_to path
+    end
+  end
+
   def create
     @agenda = current_user.agendas.build(title: params[:title])
     @agenda.team = Team.friendly.find(params[:team_id])
@@ -19,19 +32,6 @@ class AgendasController < ApplicationController
       redirect_to dashboard_url, notice: I18n.t('views.messages.create_agenda') 
     else
       render :new
-    end
-  end
-
-  def destroy
-    @team = @agenda.team
-    @users = @team.members
-    path = Rails.application.routes.recognize_path(request.referer)
-    if current_user.id == @agenda.user_id || current_user.id == @team.owner_id
-      @agenda.destroy
-      AssignMailer.delete_agenda_mail(@users).deliver
-      redirect_to dashboard_path
-    else
-      redirect_to path
     end
   end
 
